@@ -3,9 +3,19 @@ import dotenv from 'dotenv';
 dotenv.config();
 import mongoose from 'mongoose';
 
+import userRoutes from './routes/userRoutes.js';
+import authRoutes from './routes/authRoutes.js';
+import { errorHandler, notFound } from './middleware/errorMiddleware.js';
+
 const app = express();
 
 app.use(express.json());
+
+app.use('/api/user', userRoutes);
+app.use('/api/auth', authRoutes);
+
+app.use('*', notFound);
+app.use(errorHandler);
 
 mongoose
   .connect(process.env.MONGO_URI)
