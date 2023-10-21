@@ -9,6 +9,6 @@ export const signup = asyncHandler(async (req, res) => {
     res.status(201).json({ message: 'user created successfully' });
   } else {
     res.status(400);
-    throw new Error("Couldn't create user");
+    throw new Error("Couldn't create new user");
   }
 });
