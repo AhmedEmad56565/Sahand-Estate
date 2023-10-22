@@ -19,28 +19,24 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      setLoading(true);
-      const res = await fetch('/api/auth/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-      const data = await res.json();
-      console.log(data);
-      if (!data.success) {
-        throw new Error(data.message);
-      }
+    setLoading(true);
+    const res = await fetch('/api/auth/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    });
+    const data = await res.json();
+    console.log(data);
+    if (data.success === false) {
       setLoading(false);
-      setError(null);
-      navigate('/sign-in');
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
-      setError(error.message);
+      setError(data.message);
+      return;
     }
+    setLoading(false);
+    setError(null);
+    navigate('/sign-in');
   };
 
   return (
