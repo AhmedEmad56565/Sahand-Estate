@@ -4,6 +4,12 @@ import generateToken from '../utils/generateToken.js';
 
 export const signup = asyncHandler(async (req, res) => {
   const { username, email, password } = req.body;
+
+  if (!username || !email || !password) {
+    res.status(400);
+    throw new Error('username and email and password can not be empty!');
+  }
+
   const newUser = await User.create({ username, email, password });
 
   if (newUser) {
@@ -16,6 +22,12 @@ export const signup = asyncHandler(async (req, res) => {
 
 export const signin = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
+
+  if (!email || !password) {
+    res.status(400);
+    throw new Error('email and password can not be empty!');
+  }
+
   const user = await User.findOne({ email });
 
   if (user && (await user.comparePassword(password))) {
