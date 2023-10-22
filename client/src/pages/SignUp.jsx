@@ -17,31 +17,36 @@ const SignUp = () => {
     });
   };
 
-  const submitHandler = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    const res = await fetch('/api/auth/signup', {
-      method: 'POST',
-      body: JSON.stringify(formData),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    const resData = await res.json();
-    if (!resData.success) {
+    try {
+      setLoading(true);
+      const res = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      console.log(data);
+      if (!data.success) {
+        throw new Error(data.message);
+      }
       setLoading(false);
-      setError(resData.message);
-      return;
+      setError(null);
+      navigate('/sign-in');
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      setError(error.message);
     }
-    setLoading(false);
-    setError(null);
-    navigate('/sign-in');
   };
 
   return (
     <div className='py-3 max-w-xs sm:max-w-sm md:max-w-lg mx-auto'>
       <h1 className='text-3xl text-center font-semibold my-7'>Sign Up</h1>
-      <form className='flex flex-col gap-4' onSubmit={submitHandler}>
+      <form className='flex flex-col gap-4' onSubmit={handleSubmit}>
         <input
           type='text'
           placeholder='username'
