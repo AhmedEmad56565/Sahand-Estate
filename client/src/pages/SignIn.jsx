@@ -6,6 +6,7 @@ import {
   signInSuccess,
   signInFailure,
 } from '../store/user/userSlice';
+import OAuth from '../components/OAuth';
 
 const SignIn = () => {
   const [formData, setFormData] = useState({
@@ -67,6 +68,7 @@ const SignIn = () => {
         >
           {loading ? 'Loading...' : 'SIGN IN'}
         </button>
+        <OAuth />
         {error && (
           <p className='text-sm text-red-700'>{error || 'validation failed'}</p>
         )}
