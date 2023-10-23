@@ -59,13 +59,9 @@ export const google = asyncHandler(async (req, res) => {
       avatar: user.avatar,
     });
   } else {
-    const googleUsername =
-      name.split(' ').join('').toLowerCase() +
-      '_' +
-      Math.random().toString(36).slice(-4);
     const generatedPassword = Math.random().toString(36).slice(-8);
     const newUser = new User({
-      username: googleUsername,
+      username: name,
       email,
       password: generatedPassword,
       avatar: photo,

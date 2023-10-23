@@ -33,6 +33,12 @@ userSchema.pre('save', async function (next) {
 
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
+
+  this.username =
+    this.username.split(' ').join('').toLowerCase() +
+    '_' +
+    Math.random().toString(36).slice(-4);
+
   next();
 });
 
