@@ -77,5 +77,3 @@ export const google = asyncHandler(async (req, res) => {
     });
   }
 });
-
-//3.26

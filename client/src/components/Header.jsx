@@ -47,7 +47,7 @@ const Header = () => {
                 <img
                   src={currentUser.avatar}
                   alt='profile'
-                  className='w-7 h-7 rounded-full object-cover border border-slate-800'
+                  className='w-7 h-7 rounded-full object-cover border-slate-800 hover:border'
                 />
               </Link>
             ) : (
