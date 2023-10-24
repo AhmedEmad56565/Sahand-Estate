@@ -9,9 +9,10 @@ import {
 } from 'firebase/storage';
 import { app } from '../firebase';
 import {
-  signInStart,
-  signInSuccess,
-  signInFailure,
+  authStart,
+  authSuccess,
+  authFailure,
+  restartStateSuccess,
 } from '../store/user/userSlice';
 
 const Profile = () => {
@@ -74,10 +75,48 @@ const Profile = () => {
     });
   };
 
+  const handleDelete = async () => {
+    if (window.confirm('Are you sure you want to delete your account?')) {
+      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(authFailure(data.message));
+      }
+      dispatch(restartStateSuccess());
+      navigate('/sign-in');
+    } else {
+      return;
+    }
+  };
+
+  const handleSignout = async () => {
+    if (window.confirm('Are you sure you want to sign out?')) {
+      const res = await fetch(`/api/user/signout`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(authFailure(data.message));
+      }
+      dispatch(restartStateSuccess());
+      navigate('/sign-in');
+    } else {
+      return;
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    dispatch(signInStart());
+    dispatch(authStart());
     const res = await fetch(`/api/user/update/${currentUser._id}`, {
       method: 'PUT',
       headers: {
@@ -87,10 +126,10 @@ const Profile = () => {
     });
     const data = await res.json();
     if (data.success === false) {
-      dispatch(signInFailure(data.message));
+      dispatch(authFailure(data.message));
       return;
     }
-    dispatch(signInSuccess(data));
+    dispatch(authSuccess(data));
     navigate('/');
   };
 
@@ -108,7 +147,7 @@ const Profile = () => {
         <img
           src={formData.avatar || currentUser.avatar}
           alt='profile'
-          className='w-24 h-24 rounded-full mx-auto object-cover my-3 cursor-pointer'
+          className='w-24 h-24 rounded-full mx-auto object-cover my-3 cursor-pointer hover:opacity-50 transition-all'
           onClick={() => fileRef.current.click()}
         />
         <p className='text-sm self-center'>
@@ -158,8 +197,12 @@ const Profile = () => {
       </form>
 
       <div className='flex justify-between items-center mt-5'>
-        <span className='text-red-700 cursor-pointer'>Delete Account</span>
-        <span className='text-red-700 cursor-pointer'>Sign out</span>
+        <span className='text-red-700 cursor-pointer' onClick={handleDelete}>
+          Delete Account
+        </span>
+        <span className='text-red-700 cursor-pointer' onClick={handleSignout}>
+          Sign out
+        </span>
       </div>
     </div>
   );

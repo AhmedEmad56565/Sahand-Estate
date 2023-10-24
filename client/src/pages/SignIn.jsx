@@ -1,11 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  signInStart,
-  signInSuccess,
-  signInFailure,
-} from '../store/user/userSlice';
+import { authStart, authSuccess, authFailure } from '../store/user/userSlice';
 import OAuth from '../components/OAuth';
 
 const SignIn = () => {
@@ -26,7 +22,7 @@ const SignIn = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    dispatch(signInStart());
+    dispatch(authStart());
     const res = await fetch('/api/auth/signin', {
       method: 'POST',
       headers: { 'Content-type': 'application/json' },
@@ -34,10 +30,10 @@ const SignIn = () => {
     });
     const data = await res.json();
     if (data.success === false) {
-      dispatch(signInFailure(data.message));
+      dispatch(authFailure(data.message));
       return;
     }
-    dispatch(signInSuccess(data));
+    dispatch(authSuccess(data));
     navigate('/');
   };
 

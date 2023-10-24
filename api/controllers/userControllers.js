@@ -27,3 +27,28 @@ export const updateUser = asyncHandler(async (req, res) => {
     throw new Error('Can not find user');
   }
 });
+
+export const deleteUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user.id);
+
+  if (user) {
+    await User.findByIdAndDelete(req.user.id);
+    res.clearCookie('access_token');
+    res.status(200).json({ message: 'User deleted successfully' });
+  } else {
+    res.status(404);
+    throw new Error('Can not find user');
+  }
+});
+
+export const signout = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user.id);
+
+  if (user) {
+    res.clearCookie('access_token');
+    res.status(200).json({ message: 'Logged out successfully' });
+  } else {
+    res.status(404);
+    throw new Error('Can not find user');
+  }
+});
