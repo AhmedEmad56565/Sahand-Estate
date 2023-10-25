@@ -45,6 +45,18 @@ export const signin = asyncHandler(async (req, res) => {
   }
 });
 
+export const signout = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user.id);
+
+  if (user) {
+    res.clearCookie('access_token');
+    res.status(200).json({ message: 'Logged out successfully' });
+  } else {
+    res.status(404);
+    throw new Error('Can not find user');
+  }
+});
+
 export const google = asyncHandler(async (req, res) => {
   const { name, email, photo } = req.body;
   const user = await User.findOne({ email });

@@ -96,7 +96,7 @@ const Profile = () => {
 
   const handleSignout = async () => {
     if (window.confirm('Are you sure you want to sign out?')) {
-      const res = await fetch(`/api/user/signout`, {
+      const res = await fetch(`/api/auth/signout`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
