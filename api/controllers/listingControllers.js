@@ -7,5 +7,7 @@ export const createListing = asyncHandler(async (req, res) => {
   if (createdList) {
     res.status(201).json(createdList);
   } else {
+    res.status(400);
+    throw new Error(`Error creating listing`);
   }
 });

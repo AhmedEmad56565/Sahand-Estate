@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   getDownloadURL,
@@ -191,6 +191,12 @@ const Profile = () => {
         >
           {loading ? 'Loading...' : 'UPDATE'}
         </button>
+        <Link
+          to='/create-listing'
+          className='bg-green-700 rounded-lg p-3 text-white hover:opacity-95 disabled:opacity-80'
+        >
+          CREATE LISTING
+        </Link>
         {error && (
           <p className='text-sm text-red-700'>{error || 'validation failed'}</p>
         )}
