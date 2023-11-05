@@ -1,4 +1,5 @@
 import User from '../models/userModel.js';
+import Listing from '../models/ListingModel.js';
 import asyncHandler from '../middleware/asyncHandler.js';
 
 export const updateUser = asyncHandler(async (req, res) => {
@@ -38,5 +39,16 @@ export const deleteUser = asyncHandler(async (req, res) => {
   } else {
     res.status(404);
     throw new Error('Can not find user');
+  }
+});
+
+export const getUserListings = asyncHandler(async (req, res) => {
+  const userListings = await Listing.find({ userRef: req.user.id });
+
+  if (userListings) {
+    res.status(200).json(userListings);
+  } else {
+    res.status(401);
+    throw new Error('No listings for you to show!');
   }
 });

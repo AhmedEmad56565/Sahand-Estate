@@ -6,11 +6,9 @@ import {
   uploadBytesResumable,
 } from 'firebase/storage';
 import { app } from '../firebase';
-import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 export default function CreateListing() {
-  const { currentUser } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const [files, setFiles] = useState([]);
   const [formData, setFormData] = useState({
@@ -139,10 +137,7 @@ export default function CreateListing() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          ...formData,
-          userRef: currentUser._id,
-        }),
+        body: JSON.stringify(formData),
       });
       const data = await res.json();
       console.log(data);
