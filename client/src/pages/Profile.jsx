@@ -128,6 +128,22 @@ const Profile = () => {
     setUserListings(data);
   };
 
+  const deleteListingHandler = async (id) => {
+    if (window.confirm('Are you sure you want to delete this listing?')) {
+      const res = await fetch(`/api/listing/delete/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const data = await res.json();
+      console.log(data);
+      navigate('/');
+    } else {
+      return;
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -259,7 +275,12 @@ const Profile = () => {
                 <p>{listing.name}</p>
               </Link>
               <div className='flex flex-col'>
-                <button className='text-red-700'>Delete</button>
+                <button
+                  className='text-red-700'
+                  onClick={() => deleteListingHandler(listing._id)}
+                >
+                  Delete
+                </button>
                 <button className='text-green-700'>Edit</button>
               </div>
             </div>
