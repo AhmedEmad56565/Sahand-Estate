@@ -25,6 +25,8 @@ const Profile = () => {
     email: '',
     password: '',
   });
+  const [userListings, setUserListings] = useState([]);
+  const [showListingError, setShowListingError] = useState(false);
   const fileRef = useRef(null);
 
   const navigate = useNavigate();
@@ -111,6 +113,19 @@ const Profile = () => {
     } else {
       return;
     }
+  };
+
+  const handleShowListings = async () => {
+    setShowListingError(false);
+
+    const res = await fetch('/api/user/listings');
+    const data = await res.json();
+    console.log(data);
+    if (data.success === false) {
+      setShowListingError(true);
+      return;
+    }
+    setUserListings(data);
   };
 
   const handleSubmit = async (e) => {
@@ -210,6 +225,46 @@ const Profile = () => {
           Sign out
         </span>
       </div>
+
+      <button
+        type='button'
+        className='text-green-700 mt-5 mb-2'
+        onClick={handleShowListings}
+      >
+        Show listings
+      </button>
+      {showListingError && (
+        <p className='text-red-700 mt-3'>Error Showing listings</p>
+      )}
+
+      {userListings &&
+        userListings.length > 0 &&
+        userListings.map((listing) => {
+          return (
+            <div
+              key={listing._id}
+              className='flex items-center border rounded-lg py-3 gap-3'
+            >
+              <Link to={`/listing/${listing._id}`}>
+                <img
+                  src={listing.imageUrls[0]}
+                  alt={listing.name}
+                  className='w-20 h-16 object-contain'
+                />
+              </Link>
+              <Link
+                to={`/listing/${listing._id}`}
+                className='flex-1 text-slate-700 font-semibold hover:underline truncate'
+              >
+                <p>{listing.name}</p>
+              </Link>
+              <div className='flex flex-col'>
+                <button className='text-red-700'>Delete</button>
+                <button className='text-green-700'>Edit</button>
+              </div>
+            </div>
+          );
+        })}
     </div>
   );
 };
