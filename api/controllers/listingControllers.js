@@ -51,3 +51,14 @@ export const updateListing = asyncHandler(async (req, res) => {
     throw new Error(`Error deleting listing`);
   }
 });
+
+export const getListing = asyncHandler(async (req, res) => {
+  const listing = await Listing.findById(req.params.id);
+
+  if (listing) {
+    res.status(200).json(listing);
+  } else {
+    res.status(404);
+    throw new Error(`Error deleting listing`);
+  }
+});
