@@ -11,6 +11,7 @@ import PrivateRoute from './components/PrivateRoute';
 import AuthRoutes from './components/AuthRoutes';
 import CreateListing from './pages/CreateListing';
 import UpdateListing from './pages/UpdateListing';
+import Listing from './pages/Listing';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/about' element={<About />} />
+        <Route path='/listing/:id' element={<Listing />} />
 
         <Route element={<AuthRoutes />}>
           <Route path='/sign-in' element={<SignIn />} />
