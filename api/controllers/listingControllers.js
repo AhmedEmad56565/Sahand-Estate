@@ -31,20 +31,11 @@ export const updateListing = asyncHandler(async (req, res) => {
   const listing = await Listing.findById(req.params.id);
 
   if (listing) {
-    listing.name = req.body.name || listing.name;
-    listing.description = req.body.description || listing.description;
-    listing.address = req.body.address || listing.address;
-    listing.regularPrice = req.body.regularPrice || listing.regularPrice;
-    listing.discountPrice = req.body.discountPrice || listing.discountPrice;
-    listing.bathrooms = req.body.bathrooms || listing.bathrooms;
-    listing.bedrooms = req.body.bedrooms || listing.bedrooms;
-    listing.furnished = req.body.furnished || listing.furnished;
-    listing.parking = req.body.parking || listing.parking;
-    listing.type = req.body.type || listing.type;
-    listing.offer = req.body.offer || listing.offer;
-    listing.imageUrls = req.body.imageUrls || listing.imageUrls;
-
-    const updatedListing = await listing.save();
+    const updatedListing = await Listing.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
     res.status(200).json(updatedListing);
   } else {
     res.status(404);
